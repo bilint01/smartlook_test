@@ -46,7 +46,7 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app') as HTMLElement;
 
-const render = (messages: any, Component = App) => {
+const render = (messages: any, Component: React.FC = App) => {
   ReactDOM.render(
     // tslint:disable-next-line:jsx-wrap-multiline
     <Provider store={store}>

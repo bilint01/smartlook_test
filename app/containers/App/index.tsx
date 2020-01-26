@@ -7,7 +7,8 @@
  *
  */
 
-import * as React from 'react';
+import React, { useContext } from 'react';
+import { Flex, Link, Box } from 'rebass';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
@@ -16,16 +17,50 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import fetchData from '../../helpers/requests';
 
-export default function App() {
+const StyledLink = ({ props, children }) => (
+  <Link
+    sx={{
+      color: '#fff',
+      fontSize: '14px',
+      padding: '2px 8px',
+      textDecoration: 'none',
+      '&:hover': {
+        background: '#f7f8f3',
+        color: '#3944f3',
+      },
+    }}
+    variant={props}
+    href="#!"
+  >
+    {props}
+  </Link>
+);
+
+const App: React.FC = () => {
+  const AppContext = React.createContext({});
+  const state = useContext(AppContext);
   fetchData();
 
   return (
-    <div>
+    <AppContext.Provider value={state}>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
+      <Flex
+        px={1}
+        sx={{
+          background: '#5c7e88',
+        }}
+      >
+        <Box mx="left" />
+        <StyledLink props="users">Users</StyledLink>
+        <StyledLink props="posts">Posts</StyledLink>
+        <StyledLink props="comments">Comments</StyledLink>
+      </Flex>
       <GlobalStyle />
-    </div>
+    </AppContext.Provider>
   );
-}
+};
+
+export default App;

@@ -10,13 +10,25 @@
  */
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { css } from 'emotion';
+import { Flex, Box } from '@rebass/grid';
 import messages from './messages';
 
 export default function HomePage() {
   return (
-    <h3>
-      <FormattedMessage {...messages.header} />
-    </h3>
+    <Flex>
+      <Box width={1 / 1} px={2}>
+        <h3
+          className={css`
+            color: #4f6779;
+            font-size: 24px;
+            margin: 8px;
+            padding: 0;
+          `}
+        >
+          {messages.header.defaultMessage}
+        </h3>
+      </Box>
+    </Flex>
   );
 }
