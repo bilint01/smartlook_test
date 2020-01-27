@@ -7,42 +7,51 @@
  *
  */
 
-import React, { useContext } from 'react';
-import { Flex, Link, Box } from 'rebass';
+import React, { useState } from 'react';
+import { Provider, useDispatch, useStore } from 'react-redux';
+import { Flex, Box } from 'rebass';
 import { Switch, Route } from 'react-router-dom';
+import ActionTypes from '../Provider/constants';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
 import fetchData from '../../helpers/requests';
-
-const StyledLink = ({ props, children }) => (
-  <Link
-    sx={{
-      color: '#fff',
-      fontSize: '14px',
-      padding: '2px 8px',
-      textDecoration: 'none',
-      '&:hover': {
-        background: '#f7f8f3',
-        color: '#3944f3',
-      },
-    }}
-    variant={props}
-    href="#!"
-  >
-    {props}
-  </Link>
-);
+import StyledLink from '../../components/StyledLink';
+import List from '../../components/List';
 
 const App: React.FC = () => {
-  const AppContext = React.createContext({});
-  const state = useContext(AppContext);
-  fetchData();
+  // state of selected section
+  let [section, selectSection] = useState(0);
+
+  // detching data and distributing into redux store
+  const dispatch = useDispatch();
+  const store = useStore();
+
+  fetchData().then(responses =>
+    responses.map((response, count) => {
+      if (count === 0) {
+        dispatch({
+          type: ActionTypes.STORE_USERS,
+          payload: { ...response.data },
+        });
+      } else if (count === 1) {
+        dispatch({
+          type: ActionTypes.STORE_POSTS,
+          payload: { ...response.data },
+        });
+      } else if (count === 2) {
+        dispatch({
+          type: ActionTypes.STORE_COMMENTS,
+          payload: { ...response.data },
+        });
+      }
+    }),
+  );
 
   return (
-    <AppContext.Provider value={state}>
+    <Provider store={store}>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
@@ -54,12 +63,19 @@ const App: React.FC = () => {
         }}
       >
         <Box mx="left" />
-        <StyledLink props="users">Users</StyledLink>
-        <StyledLink props="posts">Posts</StyledLink>
-        <StyledLink props="comments">Comments</StyledLink>
+        <StyledLink props="users" stateAction={selectSection}>
+          Users
+        </StyledLink>
+        <StyledLink props="posts" stateAction={selectSection}>
+          Posts
+        </StyledLink>
+        <StyledLink props="comments" stateAction={selectSection}>
+          Comments
+        </StyledLink>
       </Flex>
+      <List data={store} />
       <GlobalStyle />
-    </AppContext.Provider>
+    </Provider>
   );
 };
 

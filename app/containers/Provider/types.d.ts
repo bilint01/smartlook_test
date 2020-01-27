@@ -8,6 +8,12 @@ interface LanguageProviderState {
   readonly locale: string;
 }
 
+interface DataProviderStore {
+  users: object;
+  posts: object;
+  comments: object;
+}
+
 /* --- ACTIONS --- */
 type AppActions = ActionType<typeof actions>;
 
@@ -16,5 +22,6 @@ type AppActions = ActionType<typeof actions>;
 type RootState = ApplicationRootState;
 type ContainerState = LanguageProviderState;
 type ContainerActions = AppActions;
+type ContainerStore = DataProviderStore;
 
-export { RootState, ContainerState, ContainerActions };
+export { RootState, ContainerState, ContainerActions, ContainerStore };

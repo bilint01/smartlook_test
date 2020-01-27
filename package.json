@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "@emotion/styled": "^10.0.27",
+    "@rebass/forms": "^4.0.6",
     "@rebass/grid": "^6.1.0",
     "@types/rebass": "^4.0.4",
     "axios": "^0.19.2",
