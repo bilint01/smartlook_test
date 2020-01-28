@@ -44,13 +44,12 @@ openSansObserver.load().then(() => {
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
-const storeContent = store.data.getState();
 const MOUNT_NODE = document.getElementById('app') as HTMLElement;
 
 const render = (messages: any, Component: React.FC = App) => {
   ReactDOM.render(
     // tslint:disable-next-line:jsx-wrap-multiline
-    <Provider store={storeContent}>
+    <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
           <Component />

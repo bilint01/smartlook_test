@@ -7,11 +7,13 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Provider, useDispatch, useStore } from 'react-redux';
 import { Flex, Box } from 'rebass';
 import { Switch, Route } from 'react-router-dom';
+import get from 'lodash/get';
 import ActionTypes from '../Provider/constants';
+import { User, Post, Comment } from '../../helpers/responseTypes';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -21,13 +23,19 @@ import fetchData from '../../helpers/requests';
 import StyledLink from '../../components/StyledLink';
 import List from '../../components/List';
 
+const initState = {
+  activeSection: 'users',
+};
+
 const App: React.FC = () => {
   // state of selected section
-  let [section, selectSection] = useState(0);
+  let [section, selectSection] = useState({ ...initState });
 
   // detching data and distributing into redux store
   const dispatch = useDispatch();
-  const store = useStore();
+  const dataStore = useStore();
+  const dataContent = dataStore.getState();
+  const category: User | Post | Comment = get(dataContent, `store[${section}]`);
 
   fetchData().then(responses =>
     responses.map((response, count) => {
@@ -51,7 +59,7 @@ const App: React.FC = () => {
   );
 
   return (
-    <Provider store={store}>
+    <Provider store={dataStore}>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
@@ -73,7 +81,7 @@ const App: React.FC = () => {
           Comments
         </StyledLink>
       </Flex>
-      <List data={store} />
+      {category && <List content={category} activeCategory={section} />}
       <GlobalStyle />
     </Provider>
   );

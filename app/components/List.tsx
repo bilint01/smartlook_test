@@ -1,12 +1,53 @@
-import React from 'react';
-import { Label } from '@rebass/forms';
+import React, { Fragment } from 'react';
+import { css } from 'emotion';
 
 const List = ({ ...props }) => {
-  console.log(props);
+  const { content } = props;
+  // const { activeCategory } = props;
+  const contentArray: Object = Array.from(Object.values(content));
+
   return (
-    props.store.users !== undefined && (
-      <Label>{JSON.stringify(set.store.users)}</Label>
-    )
+    <ul
+      className={css`
+        margin: 0;
+        padding: 15px;
+      `}
+    >
+      {Object.values(contentArray).map((item, index) => {
+        return (
+          <Fragment key={index}>
+            <li
+              className={css`
+                display: block;
+                font-weight: bold;
+                font-size: 14px;
+                padding: 4px 8px 3px 10px;
+                width: 100%;
+                margin-bottom: 7px;
+                border-top-left-radius: 7px;
+                list-style: none;
+                color: #355058;
+                border-bottom: 2px solid #355058;
+                &:last-child {
+                  border-bottom: none;
+                }
+                &:hover {
+                  background: #5c7e88;
+                  color: #fff;
+                  cursor: pointer;
+                  &:after {
+                    content: '\00BB';
+                    margin: 4px 8px;
+                  }
+                }
+              `}
+            >
+              {item.name}
+            </li>
+          </Fragment>
+        );
+      })}
+    </ul>
   );
 };
 
