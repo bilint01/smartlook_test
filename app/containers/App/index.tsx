@@ -7,9 +7,11 @@
  *
  */
 
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { Provider, useDispatch, useStore } from 'react-redux';
+import { css } from 'emotion';
 import { Flex, Box } from 'rebass';
+import { Select } from '@rebass/forms';
 import { Switch, Route } from 'react-router-dom';
 import get from 'lodash/get';
 import ActionTypes from '../Provider/constants';
@@ -21,15 +23,17 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import fetchData from '../../helpers/requests';
 import StyledLink from '../../components/StyledLink';
-import List from '../../components/List';
+import Wrapper from '../../components/Wrapper';
 
 const initState = {
   activeSection: 'users',
+  selectedName: '',
 };
 
 const App: React.FC = () => {
   // state of selected section
-  let [section, selectSection] = useState({ ...initState });
+  let [section, selectSection] = useState({ initState });
+  let [selectedName, handleName] = useState({ initState });
 
   // detching data and distributing into redux store
   const dispatch = useDispatch();
@@ -58,8 +62,13 @@ const App: React.FC = () => {
     }),
   );
 
+  const handleSelectName = event => {
+    const eventType = event.target;
+    handleName(() => (selectedName = eventType.value));
+  };
+
   return (
-    <Provider store={dataStore}>
+    <React.Fragment>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
@@ -81,9 +90,48 @@ const App: React.FC = () => {
           Comments
         </StyledLink>
       </Flex>
-      {category && <List content={category} activeCategory={section} />}
+      {section && category ? (
+        <Wrapper active={section} category={category} />
+      ) : (
+        <p
+          className={css`
+            margin: 24px;
+            font-family: Arial, sans-serif;
+          `}
+        >
+          Here you can view data related to user by his/her name.
+        </p>
+      )}
+      {category && (
+        <Box
+          sx={{
+            color: '#5c7e88',
+            margin: '14px',
+          }}
+        >
+          <Select
+            sx={{
+              borderColor: '#5c7e88',
+              color: '#355058',
+              fontSize: '14px',
+              outline: 'none',
+              borderRadius: '4px',
+            }}
+            id="names"
+            name="names"
+            defaultValue="select name"
+            onChange={handleSelectName}
+          >
+            {Object.values(category).map((item, index) => (
+              <option key={index} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+          </Select>
+        </Box>
+      )}
       <GlobalStyle />
-    </Provider>
+    </React.Fragment>
   );
 };
 

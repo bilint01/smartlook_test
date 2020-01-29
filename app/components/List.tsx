@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { css } from 'emotion';
 
 const List = ({ ...props }) => {
@@ -15,36 +15,34 @@ const List = ({ ...props }) => {
     >
       {Object.values(contentArray).map((item, index) => {
         return (
-          <Fragment key={index}>
-            <li
-              className={css`
-                display: block;
-                font-weight: bold;
-                font-size: 14px;
-                padding: 4px 8px 3px 10px;
-                width: 100%;
-                margin-bottom: 7px;
-                border-top-left-radius: 7px;
-                list-style: none;
-                color: #355058;
-                border-bottom: 2px solid #355058;
-                &:last-child {
-                  border-bottom: none;
+          <li
+            key={index}
+            className={css`
+              display: block;
+              font-weight: bold;
+              font-size: 14px;
+              padding: 4px 8px 3px 10px;
+              width: 100%;
+              margin-bottom: 7px;
+              list-style: none;
+              color: #355058;
+              border-bottom: 2px solid #355058;
+              &:last-child {
+                border-bottom: none;
+              }
+              &:hover {
+                background: #5c7e88;
+                color: #fff;
+                cursor: pointer;
+                &:after {
+                  content: '\00BB';
+                  margin: 4px 8px;
                 }
-                &:hover {
-                  background: #5c7e88;
-                  color: #fff;
-                  cursor: pointer;
-                  &:after {
-                    content: '\00BB';
-                    margin: 4px 8px;
-                  }
-                }
-              `}
-            >
-              {item.name}
-            </li>
-          </Fragment>
+              }
+            `}
+          >
+            {item.name}
+          </li>
         );
       })}
     </ul>
