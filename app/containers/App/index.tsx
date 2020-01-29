@@ -8,7 +8,7 @@
  */
 
 import React, { useState } from 'react';
-import { Provider, useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { css } from 'emotion';
 import { Flex, Box } from 'rebass';
 import { Select } from '@rebass/forms';
@@ -90,18 +90,6 @@ const App: React.FC = () => {
           Comments
         </StyledLink>
       </Flex>
-      {section && category ? (
-        <Wrapper active={section} category={category} />
-      ) : (
-        <p
-          className={css`
-            margin: 24px;
-            font-family: Arial, sans-serif;
-          `}
-        >
-          Here you can view data related to user by his/her name.
-        </p>
-      )}
       {category && (
         <Box
           sx={{
@@ -129,6 +117,19 @@ const App: React.FC = () => {
             ))}
           </Select>
         </Box>
+      )}
+      {section && category ? (
+        <Wrapper active={section} category={category} />
+      ) : (
+        <p
+          className={css`
+            color: #5c7e88;
+            margin: 24px;
+            font-family: Arial, sans-serif;
+          `}
+        >
+          Here you can view data related to user by his/her name.
+        </p>
       )}
       <GlobalStyle />
     </React.Fragment>

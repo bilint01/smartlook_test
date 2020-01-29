@@ -4,7 +4,9 @@ import { css } from 'emotion';
 const List = ({ ...props }) => {
   const { content } = props;
   // const { activeCategory } = props;
-  const contentArray: Object = Array.from(Object.values(content));
+  const { category } = content;
+  console.log('content: ', content);
+  const contentArray: Object = Object.values(category);
 
   return (
     <ul
