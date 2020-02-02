@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { css } from 'emotion';
-import { Flex, Box, Heading } from 'rebass';
+import { Flex, Box } from '@rebass/grid';
 
 const Wrapper = ({ ...props }) => {
   const { store, person } = props;
@@ -9,23 +9,22 @@ const Wrapper = ({ ...props }) => {
   const sharedHeaderStyle = css`
     background: #4f6779;
     padding: 4px 8px;
-    margin: 16px -4px;
+    margin: 0 -4px;
     color: #fff;
   `;
 
   return (
-    <Flex>
+    <Flex flexWrap="wrap">
       <Box
         sx={{
           color: '#5c7e88',
           margin: '0 24px',
           fontFamily: 'Arial, sans-serif',
         }}
-        width={[1 / 2]}
-        p={1}
-        mx="left"
+        width={[1, 1 / 2]}
+        p={4}
       >
-        <h2 className={sharedHeaderStyle}>Posts</h2>
+        <h3 className={sharedHeaderStyle}>Posts</h3>
         {Object.values(posts).map(
           (item: any, counter: number) =>
             item.userId == person && (
@@ -38,21 +37,14 @@ const Wrapper = ({ ...props }) => {
       </Box>
       <Box
         sx={{
-          borderRight: '10px solid #d8e4ec',
-          paddingRsight: '20px',
-        }}
-      />
-      <Box
-        sx={{
           color: '#5c7e88',
           margin: '0 24px',
           fontFamily: 'Arial, sans-serif',
         }}
-        width={[1 / 2]}
-        p={1}
-        mx="right"
+        width={[1, 1 / 2]}
+        p={4}
       >
-        <h2 className={sharedHeaderStyle}>Comments</h2>
+        <h3 className={sharedHeaderStyle}>Comments</h3>
         {Object.values(comments).map(
           (item: any, counter: number) =>
             item.postId == person && (

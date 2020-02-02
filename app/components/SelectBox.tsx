@@ -11,7 +11,7 @@ const SelectBox = ({ list, select }) => {
     <Box
       sx={{
         color: '#5c7e88',
-        margin: '14px 27px',
+        margin: '14px 29px',
       }}
     >
       <Select
