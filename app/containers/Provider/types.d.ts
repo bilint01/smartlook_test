@@ -22,6 +22,5 @@ type AppActions = ActionType<typeof actions>;
 type RootState = ApplicationRootState;
 type ContainerState = LanguageProviderState;
 type ContainerActions = AppActions;
-type ContainerStore = DataProviderStore;
 
-export { RootState, ContainerState, ContainerActions, ContainerStore };
+export { RootState, ContainerState, ContainerActions };

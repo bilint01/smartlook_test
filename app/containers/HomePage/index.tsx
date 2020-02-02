@@ -22,7 +22,7 @@ export default function HomePage() {
           className={css`
             color: #4f6779;
             font-size: 24px;
-            margin: 8px 16px;
+            margin: 24px 0 8px 24px;
             padding: 0;
           `}
         >

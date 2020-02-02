@@ -7,11 +7,10 @@
  *
  */
 
-import React, { useState } from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { css } from 'emotion';
 import { Flex, Box } from 'rebass';
-import { Select } from '@rebass/forms';
 import { Switch, Route } from 'react-router-dom';
 import get from 'lodash/get';
 import ActionTypes from '../Provider/constants';
@@ -22,53 +21,51 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
 import fetchData from '../../helpers/requests';
-import StyledLink from '../../components/StyledLink';
-import Wrapper from '../../components/Wrapper';
 
-const initState = {
-  activeSection: 'users',
-  selectedName: '',
-};
+import Wrapper from '../../components/Wrapper';
+import SelectBox from '../../components/SelectBox';
 
 const App: React.FC = () => {
   // state of selected section
-  let [section, selectSection] = useState({ initState });
-  let [selectedName, handleName] = useState({ initState });
-
-  // detching data and distributing into redux store
+  let [section, selectSection] = useState('users');
+  let [activePerson, handleName] = useState(1);
   const dispatch = useDispatch();
-  const dataStore = useStore();
-  const dataContent = dataStore.getState();
-  const category: User | Post | Comment = get(dataContent, `store[${section}]`);
+  const data:
+    | { store: object; language: object; router: object }
+    | any = useSelector(state => state);
+  let category: User | Post | Comment = get(data, `store[${section}]`);
 
-  fetchData().then(responses =>
-    responses.map((response, count) => {
-      if (count === 0) {
-        dispatch({
-          type: ActionTypes.STORE_USERS,
-          payload: { ...response.data },
-        });
-      } else if (count === 1) {
-        dispatch({
-          type: ActionTypes.STORE_POSTS,
-          payload: { ...response.data },
-        });
-      } else if (count === 2) {
-        dispatch({
-          type: ActionTypes.STORE_COMMENTS,
-          payload: { ...response.data },
-        });
-      }
-    }),
-  );
+  // fetching data and distributing into redux store
+  useEffect(() => {
+    fetchData().then(responses => {
+      responses.map((response, count) => {
+        if (count === 0) {
+          dispatch({
+            type: ActionTypes.STORE_USERS,
+            payload: { ...response.data },
+          });
+        } else if (count === 1) {
+          dispatch({
+            type: ActionTypes.STORE_POSTS,
+            payload: { ...response.data },
+          });
+        } else if (count === 2) {
+          dispatch({
+            type: ActionTypes.STORE_COMMENTS,
+            payload: { ...response.data },
+          });
+        }
+      });
+    });
+  }, []);
 
   const handleSelectName = event => {
-    const eventType = event.target;
-    handleName(() => (selectedName = eventType.value));
+    let eventType = event.target;
+    handleName(() => (activePerson = eventType.value));
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
@@ -80,46 +77,19 @@ const App: React.FC = () => {
         }}
       >
         <Box mx="left" />
-        <StyledLink props="users" stateAction={selectSection}>
-          Users
-        </StyledLink>
-        <StyledLink props="posts" stateAction={selectSection}>
-          Posts
-        </StyledLink>
-        <StyledLink props="comments" stateAction={selectSection}>
-          Comments
-        </StyledLink>
       </Flex>
-      {category && (
-        <Box
+      {category && section === 'users' && (
+        <SelectBox list={category} select={handleSelectName} />
+      )}
+      {data.store.comments ? (
+        <Flex
+          px={1}
           sx={{
-            color: '#5c7e88',
-            margin: '14px',
+            background: '#F6F9FC',
           }}
         >
-          <Select
-            sx={{
-              borderColor: '#5c7e88',
-              color: '#355058',
-              fontSize: '14px',
-              outline: 'none',
-              borderRadius: '4px',
-            }}
-            id="names"
-            name="names"
-            defaultValue="select name"
-            onChange={handleSelectName}
-          >
-            {Object.values(category).map((item, index) => (
-              <option key={index} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-        </Box>
-      )}
-      {section && category ? (
-        <Wrapper active={section} category={category} />
+          <Wrapper {...data} person={activePerson} />
+        </Flex>
       ) : (
         <p
           className={css`
@@ -128,11 +98,11 @@ const App: React.FC = () => {
             font-family: Arial, sans-serif;
           `}
         >
-          Here you can view data related to user by his/her name.
+          ...Loading
         </p>
       )}
       <GlobalStyle />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

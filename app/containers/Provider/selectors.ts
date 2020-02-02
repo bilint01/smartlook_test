@@ -7,8 +7,7 @@ import { initialState } from './reducer';
  */
 const selectLanguage = (state: ApplicationRootState) =>
   state.language || initialState;
-const selectCategory = (state: ApplicationRootState) =>
-  state.category || initialState;
+const selectCategory = (state: ApplicationRootState) => state || initialState;
 
 /**
  * Select the language locale
