@@ -78,7 +78,7 @@ const App: React.FC = () => {
       >
         <Box mx="left" />
       </Flex>
-      {category && section === 'users' && (
+      {section === 'users' && (
         <SelectBox list={category} select={handleSelectName} />
       )}
       {data.store.comments ? (

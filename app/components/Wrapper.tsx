@@ -1,10 +1,21 @@
 import React, { Fragment } from 'react';
 import { css } from 'emotion';
 import { Flex, Box } from '@rebass/grid';
+import { User, Post, Comment } from '../helpers/responseTypes';
 
 const Wrapper = ({ ...props }) => {
   const { store, person } = props;
-  const { posts, comments } = store;
+  let { posts, comments, users } = store;
+
+  // move posts into users object
+  Object.values(users).map((user: User | any) => {
+    user.posts = {};
+    Object.values(posts).map((current: Post, count) => {
+      if (user.posts && user.id === current.userId) {
+        user.posts[count] = current;
+      }
+    });
+  });
 
   const sharedHeaderStyle = css`
     background: #4f6779;
@@ -46,7 +57,7 @@ const Wrapper = ({ ...props }) => {
       >
         <h3 className={sharedHeaderStyle}>Comments</h3>
         {Object.values(comments).map(
-          (item: any, counter: number) =>
+          (item: Comment, counter: number) =>
             item.postId == person && (
               <Fragment key={counter}>
                 <h4>{item.name}</h4>

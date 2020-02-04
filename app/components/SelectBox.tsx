@@ -3,7 +3,7 @@ import { Select } from '@rebass/forms';
 import { Box } from 'rebass';
 
 const SelectBox = ({ list, select }) => {
-  if (Object.values(list).length === 0) {
+  if (!list || Object.values(list).length === 0) {
     return <p>Data is not ready yet.</p>;
   }
 
@@ -11,7 +11,7 @@ const SelectBox = ({ list, select }) => {
     <Box
       sx={{
         color: '#5c7e88',
-        margin: '14px 29px',
+        margin: '14px 32px',
       }}
     >
       <Select
@@ -30,7 +30,7 @@ const SelectBox = ({ list, select }) => {
       >
         {Object.values(list).map((item: any, index) => (
           <option key={index} value={item.id}>
-            {item.name || item.title}
+            {item.name}
           </option>
         ))}
       </Select>
