@@ -4,18 +4,8 @@ import { Flex, Box } from '@rebass/grid';
 import { User, Post, Comment } from '../helpers/responseTypes';
 
 const Wrapper = ({ ...props }) => {
-  const { store, person } = props;
-  let { posts, comments, users } = store;
-
-  // move posts into users object
-  Object.values(users).map((user: User | any) => {
-    user.posts = {};
-    Object.values(posts).map((current: Post, count) => {
-      if (user.posts && user.id === current.userId) {
-        user.posts[count] = current;
-      }
-    });
-  });
+  const { store, post } = props;
+  let { comments, users } = store;
 
   const sharedHeaderStyle = css`
     background: #4f6779;
@@ -35,14 +25,27 @@ const Wrapper = ({ ...props }) => {
         width={[1, 1 / 2]}
         p={4}
       >
-        <h3 className={sharedHeaderStyle}>Posts</h3>
-        {Object.values(posts).map(
-          (item: any, counter: number) =>
-            item.userId == person && (
-              <Fragment key={counter}>
-                <h4>{item.title}</h4>
-                <p>{item.body}</p>
-              </Fragment>
+        <h3 className={sharedHeaderStyle}>User</h3>
+        {Object.values(users).map(
+          (item: User, counter: number) =>
+            item.id == post && (
+              <div key={counter}>
+                <h4>{item.name}</h4>
+                <p>username: {item.username}</p>
+                <p>company: {item.company.name}</p>
+                <p>email: {item.email}</p>
+                <p>web: {item.website}</p>
+                <ul>
+                  <b>address:</b>
+                  <li>street: {item.address.street}</li>
+                  <li>suite: {item.address.suite}</li>
+                  <li>city: {item.address.city}</li>
+                  <li>zipcode: {item.address.zipcode}</li>
+                  <li>
+                    geo: {item.address.geo.lat}, {item.address.geo.lng}
+                  </li>
+                </ul>
+              </div>
             ),
         )}
       </Box>
@@ -58,11 +61,13 @@ const Wrapper = ({ ...props }) => {
         <h3 className={sharedHeaderStyle}>Comments</h3>
         {Object.values(comments).map(
           (item: Comment, counter: number) =>
-            item.postId == person && (
-              <Fragment key={counter}>
+            item.postId == post && (
+              <div key={counter}>
                 <h4>{item.name}</h4>
+                <p>{item.postId}</p>
+                <p>{item.email}</p>
                 <p>{item.body}</p>
-              </Fragment>
+              </div>
             ),
         )}
       </Box>

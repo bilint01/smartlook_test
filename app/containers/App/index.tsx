@@ -27,8 +27,8 @@ import SelectBox from '../../components/SelectBox';
 
 const App: React.FC = () => {
   // state of selected section
-  let [section, selectSection] = useState('users');
-  let [activePerson, handleName] = useState(1);
+  let [section, selectSection] = useState('posts');
+  let [activePost, handlePost] = useState(1);
   const dispatch = useDispatch();
   const data:
     | { store: object; language: object; router: object }
@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
   const handleSelectName = event => {
     let eventType = event.target;
-    handleName(() => (activePerson = eventType.value));
+    handlePost(() => (activePost = eventType.value));
   };
 
   return (
@@ -70,15 +70,7 @@ const App: React.FC = () => {
         <Route exact path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
-      <Flex
-        px={1}
-        sx={{
-          background: '#5c7e88',
-        }}
-      >
-        <Box mx="left" />
-      </Flex>
-      {section === 'users' && (
+      {section === 'posts' && (
         <SelectBox list={category} select={handleSelectName} />
       )}
       {data.store.comments ? (
@@ -88,7 +80,7 @@ const App: React.FC = () => {
             background: '#F6F9FC',
           }}
         >
-          <Wrapper {...data} person={activePerson} />
+          <Wrapper {...data} post={activePost} />
         </Flex>
       ) : (
         <p
