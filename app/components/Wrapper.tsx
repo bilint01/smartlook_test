@@ -7,36 +7,42 @@ const Wrapper = ({ ...props }) => {
   const { store, post } = props;
   let { comments, users } = store;
 
-  const sharedHeaderStyle = css`
-    background: #4f6779;
-    padding: 4px 8px;
-    margin: 0 -4px;
-    color: #fff;
-  `;
-
   return (
     <Flex flexWrap="wrap">
-      <Box
-        sx={{
-          color: '#5c7e88',
-          margin: '0 24px',
-          fontFamily: 'Arial, sans-serif',
-        }}
-        width={[1, 1 / 2]}
-        p={4}
-      >
-        <h3 className={sharedHeaderStyle}>User</h3>
+      <Box width={[1, 1 / 2]} p={4}>
         {Object.values(users).map(
           (item: User, counter: number) =>
             item.id == post && (
-              <div key={counter}>
-                <h4>{item.name}</h4>
+              <div
+                key={counter}
+                className={css`
+                  padding: 0 8px;
+                  color: #5c7e88;
+                `}
+              >
+                <h3
+                  className={css`
+                    background: #4f6779;
+                    padding: 4px 8px;
+                    margin: 0 -4px;
+                    color: #fff;
+                  `}
+                >
+                  {item.name}
+                </h3>
                 <p>username: {item.username}</p>
                 <p>company: {item.company.name}</p>
                 <p>email: {item.email}</p>
                 <p>web: {item.website}</p>
                 <ul>
-                  <b>address:</b>
+                  <b
+                    className={css`
+                      color: #4f6779;
+                      border-bottom: 1px solid;
+                    `}
+                  >
+                    address:
+                  </b>
                   <li>street: {item.address.street}</li>
                   <li>suite: {item.address.suite}</li>
                   <li>city: {item.address.city}</li>
@@ -58,7 +64,16 @@ const Wrapper = ({ ...props }) => {
         width={[1, 1 / 2]}
         p={4}
       >
-        <h3 className={sharedHeaderStyle}>Comments</h3>
+        <h3
+          className={css`
+            background: #4f6779;
+            padding: 4px 8px;
+            margin: 0 -4px;
+            color: #fff;
+          `}
+        >
+          Comments
+        </h3>
         {Object.values(comments).map(
           (item: Comment, counter: number) =>
             item.postId == post && (

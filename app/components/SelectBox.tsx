@@ -28,14 +28,11 @@ const SelectBox = ({ list, select }) => {
         defaultValue="select name"
         onChange={select}
       >
-        {Object.values(list).map((item: any, index) => {
-          console.log('iteml: ', item);
-          return (
-            <option key={index} value={item.userId}>
-              {item.title}
-            </option>
-          );
-        })}
+        {Object.values(list).map((item: any, index) => (
+          <option key={index} value={item.userId}>
+            {item.title}
+          </option>
+        ))}
       </Select>
     </Box>
   );
